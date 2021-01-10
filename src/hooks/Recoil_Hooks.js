@@ -351,6 +351,12 @@ function useRecoilValueLoadable_LEGACY<T>(
 
   const componentName = useComponentName();
 
+  const loadable = getRecoilValueAsLoadable(storeRef.current, recoilValue);
+  const prevLoadableRef = useRef(loadable);
+  useEffect(() => {
+    prevLoadableRef.current = loadable;
+  });
+
   useEffect(() => {
     const store = storeRef.current;
     const storeState = store.getState();
@@ -413,11 +419,6 @@ function useRecoilValueLoadable_LEGACY<T>(
     return subscription.release;
   }, [componentName, recoilValue, storeRef]);
 
-  const loadable = getRecoilValueAsLoadable(storeRef.current, recoilValue);
-  const prevLoadableRef = useRef(loadable);
-  useEffect(() => {
-    prevLoadableRef.current = loadable;
-  });
   return loadable;
 }
 
